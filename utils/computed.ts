@@ -13,3 +13,7 @@ export function getProductDescription(product: any) {
 export function getProductPrice(price: any) {
     return Number(price.unit_amount / 100).toFixed(2);
 }
+
+export function getProductQuantity(price: any) {
+    return price?.quantity;
+}

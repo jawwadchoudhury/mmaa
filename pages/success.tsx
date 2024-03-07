@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import { GetServerSideProps, NextPage } from "next";
 import Stripe from "stripe"
 import { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,9 +44,12 @@ const Home: NextPage<Props> = ({order_number}) => {
     }
 
     return (
-        <main>
-            <p>Thank you for ordering! Keep reference of your order number: {order_number}</p>
+        <>
+        <Navbar/>
+        <main className="w-[100%] pt-[120px]">
+            <p className="text-white">Thank you for ordering! Keep reference of your order number: {order_number}</p>
         </main>
+        </>
     );
 }
 

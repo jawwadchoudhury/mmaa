@@ -39,6 +39,25 @@
         font-size: 1.25vw
     }
 
+    .subtotaltext {
+        font-size: 1.25vw
+    }
+
+    .checkbutton {
+        font-size: 1.25vw;
+    }
+
+    .securedtext {
+        font-size: 1.25vw
+    }
+
+    .spendtext {
+        font-size: 1.25vw;
+    }
+    .stripetext {
+        font-size: 2.5vw;
+    }
+
     .basketimg {
         width: 15%;
     }
