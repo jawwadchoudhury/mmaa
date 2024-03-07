@@ -1,0 +1,49 @@
+.item {
+    width: 40vw;
+    height: 40vw;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .7) 80%, rgba(0, 0, 0, 0.7) 100%), url('https://miro.medium.com/v2/resize:fit:1024/1*J2J2L7sjysTyQ2UmsJm8fw.png');
+    background-size: cover;
+    color: rgba(255, 255, 255, 0.7);
+    border: none;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    border-radius: 10% 10% 0% 0%;
+}
+
+.bsktbtn {
+    margin-top: 40vw;
+}
+
+@media screen and (min-width: 1200px) {
+
+    .item {
+        width: 20vw;
+        height: 20vw;
+    }
+
+    .bsktbtn {
+        margin-top: 20vw;
+        font-size: 0.9vw;
+    }
+
+    .cardtext {
+        font-size: 0.8vw;
+    }
+    .pricetext {
+        font-size: 1.5vw;
+    }
+
+    .baskettext {
+        font-size: 1.25vw
+    }
+
+    .basketimg {
+        width: 15%;
+    }
+
+    .yhniiyb {
+        font-size: 1.25vw;
+    }
+}

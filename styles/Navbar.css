@@ -1,0 +1,165 @@
+/* Links */
+/*
+li {
+    position: relative;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 25px;
+    letter-spacing: -0.13px;
+    text-decoration: none;
+    margin-left: 2.5rem;
+    transition: all 0.5s ease;
+}
+
+.link {
+    text-decoration: none;
+    position: relative;
+    color: white;
+}
+*/
+
+/* Animations */
+/*
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+} */
+
+nav {
+  user-select: none;
+}
+.close-menu,
+.open-menu {
+  position: absolute;
+  cursor: pointer;
+  display: none;
+}
+
+.open-menu {
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  color: #fff;
+  opacity: 100%;
+}
+
+.close-menu {
+  top: 20px;
+  right: 20px;
+  color: #fff;
+  opacity: 100%;
+}
+
+#check {
+  display: none;
+}
+
+.title {
+    opacity: 70%;
+    animation: blink .5s step-end infinite alternate;
+    border-right: 2.5px solid;
+    padding-right: 2.5px;
+    border-color: rgba(255, 255, 255, 70%);
+    color: white;
+    font-size: 1.5rem;
+    transition: .5s ease-in-out;
+    user-select: none;
+}
+
+.title p {
+  user-select: none;
+}
+
+.title:hover {
+    opacity: 100%;
+    transition: .5s ease-in-out;
+}
+
+.link {
+    color: white;
+    opacity: 60%;
+    transition: .5s ease-in-out;
+}
+
+.link:hover {
+    opacity: 100%;
+    transition: .5s ease-in-out;
+}
+@media (min-width: 1200px) {
+
+  .menu {
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    z-index: 100;
+    background-color: #2c2c2c;
+    transition: all 0.5s ease-in-out;
+    font-size: 24px;
+  }
+
+  .link {
+    padding: 10px;
+    color: #fff
+  }
+
+  .close-menu,
+  .open-menu {
+    display: block;
+  }
+
+  #check:checked ~ .menu {
+    right: 0;
+  }
+}
+
+/* Animations */
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+@media (min-width: 0px) and (max-width: 1200px) {
+
+  .menu {
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    width: 70%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    z-index: 100;
+    background-color: #2c2c2c;
+    transition: all 0.5s ease-in-out;
+    font-size: 24px;
+  }
+
+  .link {
+    padding: 10px;
+    color: #fff
+  }
+
+  .close-menu,
+  .open-menu {
+    display: block;
+  }
+
+  #check:checked ~ .menu {
+    right: 0;
+  }
+}
+
+/* Animations */
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}

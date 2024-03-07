@@ -1,118 +1,233 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import { Unbounded, Be_Vietnam_Pro } from "next/font/google";
+import { GetServerSideProps, NextPage } from "next";
+import Stripe from "stripe"
+import Card from "@/components/Card";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faShoppingBasket, faBasketShopping, faXmark, faTrashCan, faLock } from '@fortawesome/free-solid-svg-icons'
+import { useContext, useEffect, useState } from "react";
+import CartContext from "@/components/context/CartContext";
+import Link from "next/link";
+import { getProductImage, getProductName, getProductPrice } from "@/utils/computed";
+import { faStripe } from "@fortawesome/free-brands-svg-icons";
+import Navbar from "@/components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
+const bvp = Be_Vietnam_Pro({
+  subsets: ['latin'], 
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
+})
 
-export default function Home() {
+const unbounded = Unbounded({
+  subsets: ['latin'], 
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"]
+})
+
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const stripe = new Stripe(process.env.SECRET_KEY ?? '', {
+    apiVersion: "2023-10-16"
+  })
+
+  const response = await stripe.prices.list({
+    limit: 10,
+    expand: ['data.product']
+  })
+
+  const prices = response.data.filter(prices => {
+    return prices.active;
+  })
+
+  return {
+    props: {
+      prices
+    },
+  }
+}
+
+type Props = {
+  prices: Stripe.Price[]
+}
+
+const Home: NextPage<Props> = ({prices}) => {
+//   var { items, remove, add } = useContext(CartContext)
+//   const [ loading, setLoading ] = useState(true)
+
+  
+//   const checkout = async() => {
+//     if (items?.length == 0) {
+//       alert("You have no items in your basket!")
+//     } else {
+//     const lineItems = items?.map(p => {
+//         return {
+//             price: p.id,
+//             quantity: 1
+//         }
+//     })
+
+  
+
+//     const res = await fetch('/api/checkout', {
+//       method: 'POST',
+//       body: JSON.stringify({lineItems: lineItems})
+//     })
+
+//     const b = await res.json()
+//     window.location.href = b.session.url
+//   }
+// }
+
+//   function removeItem(id: string): void {
+//     if (items?.length == 1) {
+//       localStorage.removeItem("basket")
+//     } else {
+//       var lsb = localStorage.getItem("basket") || ""
+//       var basket = JSON.parse(lsb)
+//       //@ts-ignore
+//       const obj = basket.find(x => x.id === id)
+//       const index = basket.indexOf(obj)
+//       if (index > -1) {
+//         basket.splice(index, 1)
+//         localStorage.setItem("basket", JSON.stringify(basket))
+//       }
+
+//     }
+//     if (remove) {
+//       remove(id)
+//     }
+//   }
+
+//   var subtotal = 0
+
+  
+//   useEffect(() => {
+//     var lsb = localStorage.getItem("basket") || ""
+    
+//     if (lsb.length >= 1) {
+//       var basket = JSON.parse(lsb)
+//       basket.forEach((x:any) => {
+//         //@ts-ignore
+//         if (!items?.includes(x)) {
+//           items?.push(x)
+//         }
+        
+        
+        
+//       });
+//       const ids = items?.map(({id}) => id)
+//       const filtered = items?.filter(({id}, index) => !ids?.includes(id, index+1))
+//       items = filtered
+//       setLoading(false)
+//     } else { setLoading(false) }
+    
+//   }, [])
+
+//   if (loading) {
+//     return null
+//   }
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+    {/* <div className="bg-[#333] fixed w-full z-20 top-0 left-0">
+            <ul className="navigation max-w-[90vw] flex flex-wrap justify-between items-center relative mx-auto py-8">
+                <Link href='/' className="logo select-none">
+                    <div className="leading-[1.5rem] font-bold pt-1 text-white duration-300 ease-in-out hover:scale-[1.02] hover:bg-gradient-to-r from-[#3aa9b4] from-0% via-[#a11dfd] via-35% to-[#fca845] to-100% bg-clip-text hover:text-transparent">
+                        <h1 className="text-[2.5rem] tracking-[0.125em] text-center pl-1"><p className={unbounded.className}>MMAA</p></h1>
+                        <h1 className="text-[.79rem] font-bold text-center"><p className={bvp.className}>Make Merch Affordable Again</p></h1>
+                    </div>
+                </Link>
+                <input type="checkbox" id="check"/>
+                
+                <span className="menu flex [&>li>a]:transition [&>li>a]:duration-200 [&>li>a]:ease-in-out pt-[60px]">
+                <div className={bvp.className}>
+                
+                {
+                  items?.map((price) => {
+                    subtotal += Number(getProductPrice(price))
+                    return <div className="w-full bg-[#303030] shadow-xl p-4 flex mb-4" key={price.id}>
+                      <img src={getProductImage(price.product)} width={'30%'} className="basketimg" style={{
+                        borderRadius: '10%'
+                      }}/>
+                      <div className="pl-4 relative top-[25%]">
+                        <h1 className="baskettext text-[3vw] text-white">{getProductName(price.product)}</h1>
+                        <div className="flex">
+                          <p className="baskettext text-[3vw] text-white">£{getProductPrice(price)}</p>
+                          <button onClick={() => removeItem(price.id)} className="text-[1.1rem] hover:cursor-pointer ml-3 text-[#a11dfd]"><FontAwesomeIcon icon={faTrashCan}/></button>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  )
+                }
+            
+            {
+              //@ts-ignore
+              items?.length == 0
+              ? (<p className="yhniiyb text-[2.5vw] text-white leading-[90vh]">You have no items in your basket</p>)
+              : (<button onClick={() => checkout()} className="bg-green-700 text-white px-4 py-3 rounded-[20px] text-[1.5rem] table mx-auto"><FontAwesomeIcon icon={faLock}/> Check Out - £{subtotal}</button>)
+            }
+
+            
+             <label htmlFor="check" className="close-menu text-white duration-200 ease-in-out"><FontAwesomeIcon icon={faXmark} /></label>
+             </div>
+           </span>
+
+           <label htmlFor="check" className="open-menu text-white duration-200 ease-in-out opacity-[65%] text-[1.25rem]"><FontAwesomeIcon icon={faBasketShopping} /></label>
+            </ul>
+        </div> */}
+    <Navbar />
+    
+    <main className="w-[100%] pt-[120px]">
+        
+        
+        <div className="flex flex-row flex-wrap justify-center">
+          {prices.map(p => 
+            <Card price={p} key={p.id}/>
+          )}
+          <div className="item mx-4 my-8 ">
+              <div className="relative top-[85%] mx-[5%]">
+                <h1 className="float-left">Product Name</h1>
+                <p className="float-right">£13.37</p>
+              </div>
+              <a><button className="bsktbtn relative bg-green-700 w-[100%] rounded-b-[20px] text-lg py-1"><p><FontAwesomeIcon icon={faShoppingBasket} /> Add to Cart</p></button></a>
+          </div>
+          <div className="item mx-4 my-8">
+              <div className="relative top-[85%] mx-[5%]">
+                <h1 className="float-left">Product Name</h1>
+                <p className="float-right">£13.37</p>
+              </div>
+              <a><button className="bsktbtn relative bg-green-700 w-[100%] rounded-b-[20px] text-lg py-1"><p><FontAwesomeIcon icon={faShoppingBasket} /> Add to Cart</p></button></a>
+          </div>
+          <div className="item mx-4 my-8">
+              <div className="relative top-[85%] mx-[5%]">
+                <h1 className="float-left">Product Name</h1>
+                <p className="float-right">£13.37</p>
+              </div>
+              <a><button className="bsktbtn relative bg-green-700 w-[100%] rounded-b-[20px] text-lg py-1"><p><FontAwesomeIcon icon={faShoppingBasket} /> Add to Cart</p></button></a>
+          </div>
+          <div className="item mx-4 my-8">
+              <div className="relative top-[85%] mx-[5%]">
+                <h1 className="float-left">Product Name</h1>
+                <p className="float-right">£13.37</p>
+              </div>
+              <a><button className="bsktbtn relative bg-green-700 w-[100%] rounded-b-[20px] text-lg py-1"><p><FontAwesomeIcon icon={faShoppingBasket} /> Add to Cart</p></button></a>
+          </div>
+          <div className="item mx-4 my-8">
+              <div className="relative top-[85%] mx-[5%]">
+                <h1 className="float-left">Product Name</h1>
+                <p className="float-right">£13.37</p>
+              </div>
+              <a><button className="bsktbtn relative bg-green-700 w-[100%] rounded-b-[20px] text-lg py-1"><p><FontAwesomeIcon icon={faShoppingBasket} /> Add to Cart</p></button></a>
+          </div>
+          <div className="item mx-4 my-8">
+              <div className="relative top-[85%] mx-[5%]">
+                <h1 className="float-left">Product Name</h1>
+                <p className="float-right">£13.37</p>
+              </div>
+              <a><button className="bsktbtn relative bg-green-700 w-[100%] rounded-b-[20px] text-lg py-1"><p><FontAwesomeIcon icon={faShoppingBasket} /> Add to Cart</p></button></a>
+          </div>
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
     </main>
+    </>
   );
 }
+
+export default Home;
