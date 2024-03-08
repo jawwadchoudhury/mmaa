@@ -67,7 +67,7 @@ const Home: NextPage<Props> = ({prices}) => {
 
           {
             [...Array(6)].map((e, i) => 
-            <div className={rubik.className}>
+            <div className={rubik.className} key={e}>
                 <div className="item mx-4 my-4 inline-block">
                     <div className="relative top-[75%] mx-[7%]">
                     <h1 className="cardtext float-left w-[60%] text-[1.75vw] mt-[5%] align-middle">Test Product</h1>
