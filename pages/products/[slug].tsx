@@ -26,7 +26,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     
     const slug = "price_" + context.query.slug
     var price
-    var error = false
     try {
         price = await stripe.prices.retrieve(slug.toString())
         const product = await stripe.products.retrieve(price.product.toString())
@@ -40,7 +39,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: {
             price: price,
-            error: error || null
         }
     }
 }
