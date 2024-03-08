@@ -2,20 +2,10 @@ import { FunctionComponent, useContext, useState, useEffect } from "react";
 import CartContext from "./context/CartContext";
 import {getProductPrice, getProductDescription, getProductImage, getProductName, getProductQuantity} from "../utils/computed";
 import Link from 'next/link'
-import { Acme, Be_Vietnam_Pro, Kanit, Unbounded } from "next/font/google";
+import { Be_Vietnam_Pro, Unbounded } from "next/font/google";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faTrashCan, faXmark, faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import { faStripe } from "@fortawesome/free-brands-svg-icons";
-
-const acme = Acme({
-    subsets: ['latin'], 
-    weight: ["400"]
-})
-
-const kanit = Kanit({
-    subsets: ['latin'], 
-    weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
-})
 
 const bvp = Be_Vietnam_Pro({
     subsets: ['latin'], 
@@ -143,17 +133,24 @@ const Navbar: FunctionComponent = () => {
                 
                 {
                   basket.map((price) => {
+                    var slugid = price.id.slice(6)
                     //@ts-ignore
                     subtotal += Number(getProductQuantity(price) * getProductPrice(price))
                     return <div className="w-full bg-[#303030] shadow-xl p-4 flex mb-4" key={price.id}>
-                      <img src={getProductImage(price.product)} width={'30%'} className="basketimg" style={{
+                      
+                      <Link href={{pathname: '/products/[slug]', query: {slug: slugid}}} className="w-[30%] basketimg">
+                        {/* @ts-ignore */}
+                      <img src={price.product.images[0]} style={{
                         borderRadius: '10%'
                       }}/>
+                      </Link>
                       <div className="pl-4 relative top-[25%]">
-                        <h1 className="baskettext text-[3vw] text-white">{getProductName(price.product)}</h1>
+                      <Link href={{pathname: '/products/[slug]', query: {slug: slugid}}}>
+                        <h1 className="baskettext text-[3vw] text-white"><b>{getProductName(price.product)}</b></h1>
+                      </Link>
                         <div className="flex">
-                        <p className="baskettext text-[2vw] text-white pr-2">Quantity:</p>
-                        <select id={price.id} value={getProductQuantity(price)} onChange={(e) => changeQuantity(price.id, Number(e.target.value))} className="baskettext text-[2vw]">
+                        <p className="baskettext text-[2.75vw] text-white pr-2">Quantity:</p>
+                        <select id={price.id} value={getProductQuantity(price)} onChange={(e) => changeQuantity(price.id, Number(e.target.value))} className="baskettext text-[3vw]">
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -163,8 +160,8 @@ const Navbar: FunctionComponent = () => {
                         </select>
                         </div>
                         <div className="flex">
-                          <p className="baskettext text-[3vw] text-white">£{getProductPrice(price)}</p>
-                          <button onClick={() => removeItem(price.id)} className="text-[1.1rem] hover:cursor-pointer ml-3 text-[#c02d2d]"><FontAwesomeIcon icon={faTrashCan}/></button>
+                          <p className="baskettext text-[3vw] text-white"><b>£{getProductPrice(price)}</b></p>
+                          <button onClick={() => removeItem(price.id)} className="binbutton text-[2.5vw] hover:cursor-pointer ml-3 text-[#c02d2d] duration-200 ease-in-out hover:text-[#a12727]"><FontAwesomeIcon icon={faTrashCan}/></button>
                         </div>
                       </div>
                     </div>
@@ -181,8 +178,8 @@ const Navbar: FunctionComponent = () => {
                 {
                   //@ts-ignore
                   subtotal < 40
-                  ? (<><p className="subtotaltext text-white ml-4 text-[2vw]">Subtotal: £{subtotal}<br/>Delivery: £2.79<br/>Total: £{(subtotal + 2.79).toFixed(2)}</p><button onClick={() => checkout()} className="checkbutton bg-green-700 text-white px-4 py-3 rounded-[20px] text-[2vw] table mx-auto"><FontAwesomeIcon icon={faLock}/> Check Out - £{(subtotal + 2.79).toFixed(2)}</button><div className="table mx-auto text-white text-[1.5vw]"><div className="flex"><p className="securedtext relative top-[.35vw] pr-[0.35em]">Secured with</p> <FontAwesomeIcon icon={faStripe} className="stripetext text-white text-[3vw] relative align-middle"/></div></div><p className="spendtext text-white table mx-auto text-[1.5vw]">Spend £{(40 - subtotal).toFixed(2)} more to get free shipping on this order!</p></>)
-                  : (<><p className="subtotaltext text-white ml-4 text-[2vw]">Subtotal: £{subtotal}<br/>Delivery: £0.00<br/>Total: £{(subtotal + 0.00).toFixed(2)}</p><button onClick={() => checkout()} className="checkbutton bg-green-700 text-white px-4 py-3 rounded-[20px] text-[2vw] table mx-auto"><FontAwesomeIcon icon={faLock}/> Check Out - £{(subtotal + 0.00).toFixed(2)}</button><div className="table mx-auto text-white text-[1.5vw]"><div className="flex"><p className="securedtext relative top-[.35vw] pr-[0.35em]">Secured with</p> <FontAwesomeIcon icon={faStripe} className="stripetext text-white text-[3vw] relative align-middle"/></div></div></>)
+                  ? (<><p className="subtotaltext text-white ml-4 text-[2vw]">Subtotal: £{subtotal.toFixed(2)}<br/>Delivery: £2.79<br/>Total: £{(subtotal + 2.79).toFixed(2)}</p><button onClick={() => checkout()} className="checkbutton bg-green-700 text-white px-4 py-3 rounded-[20px] text-[2vw] table mx-auto duration-300 ease-in-out hover:scale-[1.02]"><FontAwesomeIcon icon={faLock}/> Check Out - £{(subtotal + 2.79).toFixed(2)}</button><div className="table mx-auto text-white text-[1.5vw]"><div className="flex"><p className="securedtext relative top-[.35vw] pr-[0.35em]">Secured with</p> <FontAwesomeIcon icon={faStripe} className="stripetext text-white text-[3vw] relative align-middle"/></div></div><p className="spendtext text-white table mx-auto text-[1.5vw]">Spend £{(40 - subtotal).toFixed(2)} more to get free shipping on this order!</p></>)
+                  : (<><p className="subtotaltext text-white ml-4 text-[2vw]">Subtotal: £{subtotal.toFixed(2)}<br/>Delivery: £0.00<br/>Total: £{(subtotal + 0.00).toFixed(2)}</p><button onClick={() => checkout()} className="checkbutton bg-green-700 text-white px-4 py-3 rounded-[20px] text-[2vw] table mx-auto duration-300 ease-in-out hover:scale-[1.02]"><FontAwesomeIcon icon={faLock}/> Check Out - £{(subtotal + 0.00).toFixed(2)}</button><div className="table mx-auto text-white text-[1.5vw]"><div className="flex"><p className="securedtext relative top-[.35vw] pr-[0.35em]">Secured with</p> <FontAwesomeIcon icon={faStripe} className="stripetext text-white text-[3vw] relative align-middle"/></div></div></>)
                 }
                 
                 </>

@@ -2,8 +2,8 @@ export function getProductName(product: any) {
     return product?.name;
 }
 
-export function getProductImage(product: any) {
-    return product?.images[0];
+export async function getProductImage(product: any) {
+    return product?.images[0]
 }
 
 export function getProductDescription(product: any) {

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons'
 import CartContext from "./context/CartContext"
 import { Rubik } from "next/font/google"
+import Link from "next/link"
 
 const rubik = Rubik({
     subsets: ['latin'], 
@@ -15,8 +16,6 @@ type CardProps = {
     price: Stripe.Price
 }
 const Card: FunctionComponent<CardProps> = ({price}) => {
-    const {add, items} = useContext(CartContext);
-    const [ loading, setLoading ] = useState(true)
 
     const addToCart = (p: Stripe.Price) => {
         var lsb = localStorage.getItem("basket") || ""
@@ -42,19 +41,22 @@ const Card: FunctionComponent<CardProps> = ({price}) => {
         window.dispatchEvent(new Event("storage"))
     }
 
+    const slugid = price.id.slice(6)
     return (
         
+        <Link href={{pathname: '/products/[slug]', query: {slug: slugid}}}>
         <div className={rubik.className}>
-            <div className="item mx-4 my-8 inline-block" style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .7) 80%, rgba(0, 0, 0, 0.7) 100%), url(${getProductImage(price.product)})`
+            <div className="item mx-4 my-4 inline-block" style={{
+                //@ts-ignore
+                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .7) 80%, rgba(0, 0, 0, 0.7) 100%), url(${price.product.images[0]})`
             }}>
-                <button onClick={() => addToCart(price)} className="bsktbtn relative w-full bg-green-700 py-1 rounded-b-[20px] text-[1.75vw]"><FontAwesomeIcon icon={faShoppingBasket} /> Add to Basket</button>
-                <div className="relative bottom-[30%] mx-[7%]">
+                <div className="relative top-[75%] mx-[7%]">
                 <h1 className="cardtext float-left w-[60%] text-[1.75vw] mt-[5%] align-middle">{getProductName(price.product)}</h1>
                 <p className="pricetext float-right text-[3.5vw] flex mt-[5%] align-middle">£{getProductPrice(price)}</p>
                 </div>
             </div>
         </div>
+        </Link>
     )
 }
 

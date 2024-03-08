@@ -9,12 +9,10 @@
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
-    border-radius: 10% 10% 0% 0%;
+    border-radius: 10%;
 }
 
-.bsktbtn {
-    margin-top: 40vw;
-}
+
 
 @media screen and (min-width: 1200px) {
 
@@ -24,7 +22,6 @@
     }
 
     .bsktbtn {
-        margin-top: 20vw;
         font-size: 0.9vw;
     }
 
@@ -63,6 +60,10 @@
     }
 
     .yhniiyb {
+        font-size: 1.25vw;
+    }
+
+    .binbutton {
         font-size: 1.25vw;
     }
 }
