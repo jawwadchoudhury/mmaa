@@ -32,8 +32,10 @@ export default async function handler(
     })
 
     var session
-    var success_url = 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}'
-    var callback = 'http://localhost:3000/'
+    // var success_url = 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}'
+    // var callback = 'http://localhost:3000/'
+    var success_url = 'https://mmaa.vercel.app/success?session_id={CHECKOUT_SESSION_ID}'
+    var callback = 'https://mmaa.vercel.app/'
     //@ts-ignore
     if (body.subtotal > 40) {
       session = await stripe.checkout.sessions.create({
