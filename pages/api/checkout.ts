@@ -30,44 +30,32 @@ export default async function handler(
     const stripe = new Stripe(process.env.SECRET_KEY ?? '', {
       apiVersion: "2023-10-16"
     })
-
-    var session
-    // var success_url = 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}'
-    // var callback = 'http://localhost:3000/'
-    var success_url = 'https://mmaa.vercel.app/success?session_id={CHECKOUT_SESSION_ID}'
-    var callback = 'https://mmaa.vercel.app/'
+    var shr = 'shr_1Orn8nAbOyVnZGBHPVecsILP'
+    var success_url = 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}'
+    var callback = 'http://localhost:3000/'
+    var pub_success_url = 'https://mmaa.vercel.app/success?session_id={CHECKOUT_SESSION_ID}'
+    var pub_callback = 'https://mmaa.vercel.app/'
     //@ts-ignore
     if (body.subtotal > 40) {
-      session = await stripe.checkout.sessions.create({
-        success_url: success_url,
-        cancel_url: callback,
-        line_items: body.lineItems,
-        mode: 'payment',
-        phone_number_collection: {
-          enabled: true
-        },
-        shipping_address_collection: {
-          allowed_countries: ["GB"]
-        },
-        shipping_options: [{shipping_rate: 'shr_1Orn8nAbOyVnZGBHPVecsILP'}],
-        allow_promotion_codes: true,
-      })
+      shr = 'shr_1Orn8nAbOyVnZGBHPVecsILP'
     } else {
-      session = await stripe.checkout.sessions.create({
-        success_url: success_url,
-        cancel_url: callback,
-        line_items: body.lineItems,
-        mode: 'payment',
-        phone_number_collection: {
-          enabled: true
-        },
-        shipping_address_collection: {
-          allowed_countries: ["GB"]
-        },
-        shipping_options: [{shipping_rate: 'shr_1Opwh6AbOyVnZGBHUENu7gaA'}],
-        allow_promotion_codes: true,
-      })
+      shr = 'shr_1Opwh6AbOyVnZGBHUENu7gaA'
     }
+
+    var session = await stripe.checkout.sessions.create({
+      success_url: pub_success_url,
+      cancel_url: pub_callback,
+      line_items: body.lineItems,
+      mode: 'payment',
+      phone_number_collection: {
+        enabled: true
+      },
+      shipping_address_collection: {
+        allowed_countries: ["GB"]
+      },
+      shipping_options: [{shipping_rate: shr}],
+      allow_promotion_codes: true,
+    })
     
     res.status(201).json({session})
   } catch (e) {

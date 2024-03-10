@@ -11,6 +11,7 @@ import { getProductImage, getProductName, getProductPrice } from "@/utils/comput
 import { faStripe } from "@fortawesome/free-brands-svg-icons";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
+import Head from "next/head";
 
 const bvp = Be_Vietnam_Pro({
   subsets: ['latin'], 
@@ -56,6 +57,9 @@ type Props = {
 const Home: NextPage<Props> = ({prices}) => {
   return (
     <>
+    <Head>
+        <title>MMAA &#124; Home</title>
+      </Head>
     <Navbar />
     
     <main className="w-[100%] pt-[120px]">

@@ -1,5 +1,6 @@
 import { Unbounded, Be_Vietnam_Pro, Rubik } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import Head from "next/head";
 
 const bvp = Be_Vietnam_Pro({
   subsets: ['latin'], 
@@ -19,6 +20,9 @@ const rubik = Rubik({
 const NotFound = () => {
   return (
     <>
+    <Head>
+        <title>MMAA | 404</title>
+    </Head>
     <Navbar />
     
     <main className="w-[100%]">

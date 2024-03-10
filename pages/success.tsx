@@ -3,6 +3,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Stripe from "stripe"
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,6 +46,9 @@ const Home: NextPage<Props> = ({order_number}) => {
 
     return (
         <>
+        <Head>
+            <title>MMAA | Order Successful</title>
+        </Head>
         <Navbar/>
         <main className="w-[100%] pt-[120px]">
             <p className="text-white">Thank you for ordering! Keep reference of your order number: {order_number}</p>

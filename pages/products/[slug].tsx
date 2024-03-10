@@ -1,5 +1,5 @@
 import { Unbounded, Be_Vietnam_Pro } from "next/font/google";
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, Metadata, NextPage } from "next";
 import Stripe from "stripe"
 import Navbar from "@/components/Navbar";
 import { getProductImage, getProductName, getProductPrice } from "@/utils/computed";
@@ -8,6 +8,7 @@ import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Head from "next/head";
 
 const bvp = Be_Vietnam_Pro({
   subsets: ['latin'], 
@@ -59,6 +60,11 @@ type Props = {
     medium: any
     large: any
 }
+
+export const metadata: Metadata = {
+    title: "Slug"
+}
+
 const ProductSlug: NextPage<Props> = ({product, small, medium, large}) => {
     const [ size, setSize ] = useState("M")
 
@@ -98,6 +104,9 @@ const ProductSlug: NextPage<Props> = ({product, small, medium, large}) => {
     //if (error) router.push('/404')
     return (
         <>
+        <Head>
+            <title>MMAA &#124; {getProductName(product)}</title>
+        </Head>
         <Navbar />
         <main className="w-[100%] pt-[120px] text-white">
         <div className="flex">
