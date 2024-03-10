@@ -87,6 +87,10 @@ nav {
     opacity: 100%;
     transition: .5s ease-in-out;
 }
+
+.menu {
+  overflow-y: auto;
+}
 @media (min-width: 1200px) {
 
   .menu {

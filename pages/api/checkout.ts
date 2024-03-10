@@ -32,11 +32,13 @@ export default async function handler(
     })
 
     var session
+    var success_url = 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}'
+    var callback = 'http://localhost:3000/'
     //@ts-ignore
     if (body.subtotal > 40) {
       session = await stripe.checkout.sessions.create({
-        success_url: `https://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `https://localhost:3000`,
+        success_url: success_url,
+        cancel_url: callback,
         line_items: body.lineItems,
         mode: 'payment',
         phone_number_collection: {
@@ -50,8 +52,8 @@ export default async function handler(
       })
     } else {
       session = await stripe.checkout.sessions.create({
-        success_url: `https://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `https://localhost:3000`,
+        success_url: success_url,
+        cancel_url: callback,
         line_items: body.lineItems,
         mode: 'payment',
         phone_number_collection: {

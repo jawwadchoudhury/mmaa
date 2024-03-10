@@ -13,22 +13,22 @@ const rubik = Rubik({
 })
 
 type CardProps = {
-    price: Stripe.Price
+    product: Stripe.Product
 }
-const Card: FunctionComponent<CardProps> = ({price}) => {
+const ProductCard: FunctionComponent<CardProps> = ({product}) => {
 
-    const slugid = price.id.slice(6)
+    const slugid = product.id.slice(5)
     return (
         
         <Link href={{pathname: '/products/[slug]', query: {slug: slugid}}}>
         <div className={rubik.className}>
             <div className="item mx-4 my-4 inline-block" style={{
                 //@ts-ignore
-                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .7) 80%, rgba(0, 0, 0, 0.7) 100%), url(${price.product.images[0]})`
+                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .7) 80%, rgba(0, 0, 0, 0.7) 100%), url(${product.images[0]})`
             }}>
                 <div className="relative top-[75%] mx-[7%]">
-                <h1 className="cardtext float-left w-[60%] text-[1.75vw] mt-[5%] align-middle">{getProductName(price.product)}</h1>
-                <p className="pricetext float-right text-[3.5vw] flex mt-[5%] align-middle">£{getProductPrice(price)}</p>
+                <h1 className="cardtext float-left w-[60%] text-[1.75vw] mt-[5%] align-middle">{getProductName(product)}</h1>
+                <p className="pricetext float-right text-[3.5vw] flex mt-[5%] align-middle">£{getProductPrice(product.default_price)}</p>
                 </div>
             </div>
         </div>
@@ -36,4 +36,4 @@ const Card: FunctionComponent<CardProps> = ({price}) => {
     )
 }
 
-export default Card
+export default ProductCard

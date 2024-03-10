@@ -10,6 +10,7 @@ import Link from "next/link";
 import { getProductImage, getProductName, getProductPrice } from "@/utils/computed";
 import { faStripe } from "@fortawesome/free-brands-svg-icons";
 import Navbar from "@/components/Navbar";
+import ProductCard from "@/components/ProductCard";
 
 const bvp = Be_Vietnam_Pro({
   subsets: ['latin'], 
@@ -32,9 +33,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     apiVersion: "2023-10-16"
   })
 
-  const response = await stripe.prices.list({
+  const response = await stripe.products.list({
     limit: 10,
-    expand: ['data.product']
+    expand: ['data.default_price']
   })
 
   const prices = response.data.filter(prices => {
@@ -49,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 type Props = {
-  prices: Stripe.Price[]
+  prices: Stripe.Product[]
 }
 
 const Home: NextPage<Props> = ({prices}) => {
@@ -61,13 +62,21 @@ const Home: NextPage<Props> = ({prices}) => {
         
         
         <div className="flex flex-row flex-wrap justify-center">
-          {prices.map(p => 
-            <Card price={p} key={p.id}/>
-          )}
+          {/* {
+            prices.map(p => 
+              <Card price={p} key={p.id}/>
+            )
+          } */}
+          {
+            prices.map(p =>
+              <ProductCard product={p} key={p.id}/>
+             )
+          }
+
 
           {
             [...Array(6)].map((e, i) => 
-            <div className={rubik.className} key={e}>
+            <div className={rubik.className} key={i}>
                 <div className="item mx-4 my-4 inline-block">
                     <div className="relative top-[75%] mx-[7%]">
                     <h1 className="cardtext float-left w-[60%] text-[1.75vw] mt-[5%] align-middle">Test Product</h1>

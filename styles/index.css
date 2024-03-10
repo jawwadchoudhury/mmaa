@@ -12,9 +12,7 @@
     border-radius: 10%;
 }
 
-
-
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1000px) {
 
     .item {
         width: 20vw;
@@ -34,6 +32,10 @@
 
     .baskettext {
         font-size: 1.25vw
+    }
+
+    .basketsizetext {
+        font-size: 1vw
     }
 
     .subtotaltext {
@@ -56,7 +58,7 @@
     }
 
     .basketimg {
-        width: 15%;
+        width: 50%;
     }
 
     .yhniiyb {

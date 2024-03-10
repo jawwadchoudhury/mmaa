@@ -14,6 +14,10 @@ export function getProductPrice(price: any) {
     return Number(price.unit_amount / 100).toFixed(2);
 }
 
+export function getProductSize(price: any) {
+    return price?.nickname
+}
+
 export function getProductQuantity(price: any) {
     return price?.quantity;
 }
